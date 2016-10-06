@@ -2,6 +2,50 @@ defmodule NebulaBootstrap do
 
   require Logger
 
+  defmacro acl_authenticated do
+    quote do
+      %{
+          aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
+          acemask: "READ",
+          acetype: "ALLOW",
+          identifier: "AUTHENTICATED@"
+      }
+    end
+  end
+
+  defmacro acl_authenticated_inherited do
+    quote do
+      %{
+          aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
+          acemask: "READ",
+          acetype: "ALLOW",
+          identifier: "AUTHENTICATED@"
+      }
+    end
+  end
+
+  defmacro acl_owner do
+    quote do
+      %{
+          aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
+          acemask: "ALL_PERMS",
+          acetype: "ALLOW",
+          identifier: "OWNER@"
+      }
+    end
+  end
+
+  defmacro acl_owner_inherited do
+    quote do
+      %{
+          aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
+          acemask: "ALL_PERMS",
+          acetype: "ALLOW",
+          identifier: "OWNER@"
+      }
+    end
+  end
+
   defmacro capabilities_uri do
     "/cdmi_capabilities/"
   end
@@ -54,14 +98,8 @@ defmodule NebulaBootstrap do
                domainURI: "#{system_domain_uri}",
                metadata:
                 %{cdmi_acls: [
-                  %{aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
-                    acemask: "ALL_PERMS",
-                    acetype: "ALLOW",
-                    identifier: "OWNER@"},
-                  %{aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
-                    acemask: "READ",
-                    acetype: "ALLOW",
-                    identifier: "AUTHENTICATED@"}],
+                  acl_owner,
+                  acl_authenticated],
                 cdmi_atime: "#{timestamp}",
                 cdmi_ctime: "#{timestamp}",
                 cdmi_mtime: "#{timestamp}",
@@ -92,18 +130,8 @@ defmodule NebulaBootstrap do
             domainURI: "#{system_domain_uri}",
             metadata: %{
                 cdmi_acls: [
-                    %{
-                        aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
-                        acemask: "ALL_PERMS",
-                        acetype: "ALLOW",
-                        identifier: "OWNER@"
-                    },
-                    %{
-                        aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
-                        acemask: "READ",
-                        acetype: "ALLOW",
-                        identifier: "AUTHENTICATED@"
-                    }
+                    acl_owner_inherited,
+                    acl_authenticated_inherited
                 ],
                 cdmi_atime: "#{timestamp}",
                 cdmi_ctime: "#{timestamp}",
@@ -139,30 +167,10 @@ defmodule NebulaBootstrap do
             domainURI: "#{system_domain_uri}",
             metadata: %{
                 cdmi_acls: [
-                    %{
-                        aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
-                        acemask: "ALL_PERMS",
-                        acetype: "ALLOW",
-                        identifier: "OWNER@"
-                    },
-                    %{
-                        aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
-                        acemask: "READ",
-                        acetype: "ALLOW",
-                        identifier: "AUTHENTICATED@"
-                    },
-                    %{
-                        aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
-                        acemask: "ALL_PERMS",
-                        acetype: "ALLOW",
-                        identifier: "OWNER@"
-                    },
-                    %{
-                        aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
-                        acemask: "READ",
-                        acetype: "ALLOW",
-                        identifier: "AUTHENTICATED@"
-                    }
+                  acl_owner,
+                  acl_authenticated,
+                  acl_owner_inherited,
+                  acl_authenticated_inherited
                 ],
                 cdmi_atime: "#{timestamp}",
                 cdmi_ctime: "#{timestamp}",
