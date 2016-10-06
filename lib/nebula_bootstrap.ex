@@ -73,6 +73,8 @@ defmodule NebulaBootstrap do
     create_domains_container({domaincontainer_oid, domaincontainer_key}, root_oid, adminid)
     {sysdomain_oid, sysdomain_key} = Cdmioid.generate(45241)
     create_system_domain({sysdomain_oid, sysdomain_key}, domaincontainer_oid, adminid)
+    {members_oid, members_key} = Cdmioid.generate(45241)
+    create_domain_members_container({members_oid, members_key}, sysdomain_oid, adminid)
   end
 
   defp parse_args(args) do
@@ -154,6 +156,84 @@ defmodule NebulaBootstrap do
 
   @doc """
   Create the system domain object.
+  """
+  defp create_system_domain({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{capabilitiesURI: "#{capabilities_uri}",
+            children: [
+                "cdmi_domain_members/",
+                "cdmi_domain_summary/"
+            ],
+            childrenrange: "0-1",
+            completionStatus: "complete",
+            domainURI: "#{system_domain_uri}",
+            metadata: %{
+                cdmi_acls: [
+                  acl_owner,
+                  acl_authenticated,
+                  acl_owner_inherited,
+                  acl_authenticated_inherited
+                ],
+                cdmi_atime: "#{timestamp}",
+                cdmi_ctime: "#{timestamp}",
+                cdmi_mtime: "#{timestamp}",
+                cdmi_owner: "#{adminid}"
+            },
+            objectID: "#{oid}",
+            objectName: "system_domain/",
+            objectType: "application/cdmi-domain",
+            parentID: "#{parentid}",
+            parentURI: "/cdmi_domains/"
+        }
+        search_parm = get_domain_hash(object.domainURI) <> "/cdmi_domains/system_domain/"
+        cdmi_object = %{cdmi: object,
+                        sp: "#{search_parm}"}
+        response = GenServer.call(Metadata, {:put, key, cdmi_object})
+        Logger.debug("System domain object:")
+        IO.inspect(response)
+  end
+
+  @doc """
+  Create the domain members container.
+  """
+  defp create_domain_members_container({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{capabilitiesURI: "#{capabilities_uri}",
+            children: [
+                "#{adminid}"
+            ],
+            childrenrange: "0-0",
+            completionStatus: "complete",
+            domainURI: "#{system_domain_uri}",
+            metadata: %{
+                cdmi_acls: [
+                  acl_owner,
+                  acl_authenticated,
+                  acl_owner_inherited,
+                  acl_authenticated_inherited
+                ],
+                cdmi_atime: "#{timestamp}",
+                cdmi_ctime: "#{timestamp}",
+                cdmi_mtime: "#{timestamp}",
+                cdmi_owner: "#{adminid}"
+            },
+            objectID: "#{oid}",
+            objectName: "cdmi_domain_members/",
+            objectType: "application/cdmi-container",
+            parentID: "#{parentid}",
+            parentURI: "/cdmi_domains/system_domain/"
+        }
+        search_parm = get_domain_hash(object.domainURI) <>
+                      "/cdmi_domains/system_domain/cdmi_domain_members/"
+        cdmi_object = %{cdmi: object,
+                        sp: "#{search_parm}"}
+        response = GenServer.call(Metadata, {:put, key, cdmi_object})
+        Logger.debug("Domain members container:")
+        IO.inspect(response)
+  end
+
+  @doc """
+  Create the administrator member object.
   """
   defp create_system_domain({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
