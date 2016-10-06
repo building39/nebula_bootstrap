@@ -1,4 +1,4 @@
-%{"cdmioid": {:git, "https://github.com/building39/cdmioid.git", "793ae9fbbed4aa1f6494703b3b863608bd90d379", [branch: "master"]},
+%{"cdmioid": {:git, "https://github.com/building39/cdmioid.git", "8740e2acd1afa1302a4f442a1238240e96f69f82", [tag: "0.1.1"]},
   "elcrc16": {:git, "https://github.com/building39/elcrc16.git", "af5ab56bbccea00b2f166c25b872828f27d45673", [branch: "master"]},
   "exconstructor": {:hex, :exconstructor, "1.0.2", "46c60fa258d3893c2c7d0d45f80b9c830919c38eea2a19c61acaf17f0851b902", [:mix], []},
   "hamcrest": {:hex, :hamcrest, "0.1.2", "2f06fad05983ce98a7832c4a7a508aab935b68865fdf607d30a030c129ec1365", [:rebar, :make], []},
