@@ -88,8 +88,34 @@ defmodule NebulaBootstrap do
     create_capabilities({capabilities_oid, capabilities_key}, root_oid, adminid)
 
     {capabilities_container_oid, capabilities_container_key} = Cdmioid.generate(45241)
-    create_capabilities_container({capabilities_container_oid, capabilities_container_key},
-                                  root_oid, adminid)
+    create_capabilities_container({capabilities_container_oid,
+                                   capabilities_container_key},
+                                  capabilities_oid, adminid)
+
+    {capabilities_dataobject_oid, capabilities_dataobject_key} = Cdmioid.generate(45241)
+    create_capabilities_dataobject({capabilities_dataobject_oid,
+                                    capabilities_dataobject_key},
+                                   capabilities_oid, adminid)
+
+    {capabilities_domain_oid, capabilities_domain_key} = Cdmioid.generate(45241)
+    create_capabilities_domain({capabilities_domain_oid,
+                                capabilities_domain_key},
+                               capabilities_oid, adminid)
+
+    {capabilities_container_perm_oid, capabilities_container_perm_key} = Cdmioid.generate(45241)
+    create_capabilities_container_perm({capabilities_container_perm_oid,
+                                        capabilities_container_perm_key},
+                                       capabilities_container_oid, adminid)
+
+    {capabilities_dataobject_perm_oid, capabilities_dataobject_perm_key} = Cdmioid.generate(45241)
+    create_capabilities_dataobject_perm({capabilities_dataobject_perm_oid,
+                                         capabilities_dataobject_perm_key},
+                                        capabilities_dataobject_oid, adminid)
+
+    {capabilities_domain_member_oid, capabilities_domain_member_key} = Cdmioid.generate(45241)
+    create_capabilities_domain_member({capabilities_domain_member_oid,
+                                         capabilities_domain_member_key},
+                                        capabilities_domain_oid, adminid)
 
     {domaincontainer_oid, domaincontainer_key} = Cdmioid.generate(45241)
     create_domains_container({domaincontainer_oid, domaincontainer_key}, root_oid, adminid)
@@ -301,8 +327,285 @@ defmodule NebulaBootstrap do
     cdmi_object = %{cdmi: object,
                     sp: "#{search_parm}"}
     response = GenServer.call(Metadata, {:put, key, cdmi_object})
-    Logger.debug("Capabilities object:")
-    IO.inspect(response)
+  end
+
+  @doc """
+  Create the capabilities container permanent object.
+  """
+  defp create_capabilities_container_perm({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+                capabilities: %{
+                  cdmi_RPO: "false",
+                  cdmi_RTO: "false",
+                  cdmi_acl: "true",
+                  cdmi_acount: "false",
+                  cdmi_assignedsize: "false",
+                  cdmi_atime: "true",
+                  cdmi_authentication_methods: [
+                      "anonymous",
+                      "basic"
+                  ],
+                  cdmi_copy_container: "false",
+                  cdmi_copy_dataobject: "false",
+                  cdmi_create_container: "true",
+                  cdmi_create_dataobject: "true",
+                  cdmi_create_queue: "false",
+                  cdmi_create_reference: "false",
+                  cdmi_create_value_range: "false",
+                  cdmi_ctime: "true",
+                  cdmi_data_autodelete: "false",
+                  cdmi_data_dispersion: "false",
+                  cdmi_data_holds: "false",
+                  cdmi_data_redundancy: "",
+                  cdmi_data_retention: "false",
+                  dmi_delete_container: "true",
+                  cdmi_deserialize_container: "false",
+                  cdmi_deserialize_dataobject: "false",
+                  cdmi_deserialize_queue: "false",
+                  cdmi_encryption: [],
+                  dmi_export_container_cifs: "false",
+                  cdmi_export_container_iscsi: "false",
+                  cdmi_export_container_nfs: "false",
+                  cdmi_export_container_occi: "false",
+                  cdmi_export_container_webdav: "false",
+                  cdmi_geographic_placement: "false",
+                  cdmi_immediate_redundancy: "",
+                  cdmi_infrastructure_redundancy: "",
+                  cdmi_latency: "false",
+                  cdmi_list_children: "true",
+                  cdmi_list_children_range: "true",
+                  cdmi_mcount: "false",
+                  cdmi_modify_deserialize_container: "false",
+                  cdmi_modify_metadata: "true",
+                  cdmi_move_container: "false",
+                  cdmi_move_dataobject: "false",
+                  cdmi_mtime: "true",
+                  cdmi_post_dataobject: "false",
+                  cdmi_post_queue: "false",
+                  cdmi_read_metadata: "true",
+                  cdmi_read_value: "false",
+                  cdmi_read_value_range: "false",
+                  cdmi_sanitization_method: [],
+                  cdmi_serialize_container: "false",
+                  cdmi_serialize_dataobject: "false",
+                  cdmi_serialize_domain: "false",
+                  cdmi_serialize_queue: "false",
+                  cdmi_size: "true",
+                  cdmi_snapshot: "false",
+                  cdmi_throughput: "false",
+                  cdmi_value_hash: value_hash_methods
+            },
+            objectID: "#{oid}",
+            objectName: "permanent/",
+            objectType: "application/cdmi-capability",
+            parentID: "#{parentid}",
+            parentURI: "/cdmi_capabilities/container/"
+        }
+    search_parm = get_domain_hash(system_domain_uri) <> "/cdmi_capabilities/container/permanent/"
+    cdmi_object = %{cdmi: object,
+                    sp: "#{search_parm}"}
+    response = GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
+  @doc """
+  Create the capabilities domain object.
+  """
+  defp create_capabilities_domain({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+                capabilities: %{
+                  cdmi_RPO: "false",
+                  cdmi_RTO: "false",
+                  cdmi_acl: "true",
+                  cdmi_acount: "false",
+                  cdmi_assignedsize: "false",
+                  cdmi_atime: "true",
+                  cdmi_authentication_methods: [
+                      "anonymous",
+                      "basic"
+                  ],
+                  cdmi_copy_domain: "false",
+                  cdmi_create_domain: "true",
+                  cdmi_ctime: "true",
+                  cdmi_data_autodelete: "false",
+                  cdmi_data_dispersion: "false",
+                  cdmi_data_holds: "false",
+                  cdmi_data_redundancy: "",
+                  cdmi_data_retention: "false",
+                  cdmi_delete_domain: "true",
+                  cdmi_deserialize_domain: "false",
+                  cdmi_domain_members: "true",
+                  cdmi_domain_summary: "true",
+                  cdmi_encryption: [],
+                  cdmi_geographic_placement: "false",
+                  cdmi_immediate_redundancy: "",
+                  cdmi_infrastructure_redundancy: "",
+                  cdmi_latency: "false",
+                  cdmi_list_children: "true",
+                  cdmi_mcount: "false",
+                  cdmi_modify_deserialize_domain: "false",
+                  cdmi_modify_metadata: "true",
+                  cdmi_move_domain: "false",
+                  cdmi_mtime: "true",
+                  cdmi_read_metadata: "true",
+                  cdmi_sanitization_method: [],
+                  cdmi_size: "true",
+                  cdmi_throughput: "false",
+                  cdmi_value_hash: value_hash_methods
+              },
+              objectID: "#{oid}",
+              objectName: "domain/",
+              objectType: "application/cdmi-capability",
+              parentID: "#{parentid}",
+              parentURI: "/cdmi_capabilities/"
+    }
+    search_parm = get_domain_hash(system_domain_uri) <> "/cdmi_capabilities/domain/"
+    cdmi_object = %{cdmi: object,
+                    sp: "#{search_parm}"}
+    response = GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
+  @doc """
+  Create the capabilities dataobject object.
+  """
+  defp create_capabilities_dataobject({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+                capabilities: %{
+                cdmi_RPO: "false",
+                cdmi_RTO: "false",
+                cdmi_acl: "true",
+                cdmi_acount: "false",
+                cdmi_assignedsize: "false",
+                cdmi_atime: "true",
+                cdmi_authentication_methods: [
+                    "anonymous",
+                    "basic"
+                ],
+                cdmi_ctime: "true",
+                cdmi_data_autodelete: "false",
+                cdmi_data_dispersion: "false",
+                cdmi_data_holds: "false",
+                cdmi_data_redundancy: "",
+                cdmi_data_retention: "false",
+                cdmi_delete_dataobject: "true",
+                dmi_encryption: [],
+                cdmi_geographic_placement: "false",
+                cdmi_immediate_redundancy: "",
+                cdmi_infrastructure_redundancy: "",
+                dmi_latency: "false",
+                cdmi_mcount: "false",
+                cdmi_modify_deserialize_dataobject: "false",
+                cdmi_modify_metadata: "true",
+                cdmi_modify_value: "true",
+                cdmi_modify_value_range: "true",
+                cdmi_mtime: "true",
+                cdmi_read_metadata: "true",
+                cdmi_read_value: "true",
+                cdmi_read_value_range: "true",
+                cdmi_sanitization_method: [],
+                cdmi_size: "true",
+                cdmi_throughput: "false",
+                cdmi_value_hash: value_hash_methods
+            },
+            children: [
+                "permanent/",
+                "member/"
+            ],
+            childrenrange: "0-1",
+            objectID: "#{oid}",
+            objectName: "dataobject/",
+            objectType: "application/cdmi-capability",
+            parentID: "#{parentid}",
+            parentURI: "/cdmi_capabilities/"
+    }
+    search_parm = get_domain_hash(system_domain_uri) <> "/cdmi_capabilities/dataobject/"
+    cdmi_object = %{cdmi: object,
+                    sp: "#{search_parm}"}
+    response = GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
+  @doc """
+  Create the capabilities dataobject permanent object.
+  """
+  defp create_capabilities_dataobject_perm({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+                capabilities: %{
+                  cdmi_RPO: "false",
+                  cdmi_RTO: "false",
+                  cdmi_acl: "true",
+                  cdmi_acount: "false",
+                  cdmi_assignedsize: "false",
+                  cdmi_atime: "true",
+                  cdmi_authentication_methods: [
+                      "anonymous",
+                      "basic"
+                  ],
+                  cdmi_ctime: "true",
+                  cdmi_data_autodelete: "false",
+                  cdmi_data_dispersion: "false",
+                  cdmi_data_holds: "false",
+                  cdmi_data_redundancy: "",
+                  cdmi_data_retention: "false",
+                  cdmi_encryption: [],
+                  cdmi_geographic_placement: "false",
+                  cdmi_immediate_redundancy: "",
+                  cdmi_infrastructure_redundancy: "",
+                  cdmi_latency: "false",
+                  cdmi_mcount: "false",
+                  cdmi_modify_deserialize_dataobject: "false",
+                  cdmi_modify_metadata: "true",
+                  cdmi_modify_value: "true",
+                  cdmi_modify_value_range: "true",
+                  cdmi_mtime: "true",
+                  cdmi_read_metadata: "true",
+                  cdmi_read_value: "true",
+                  cdmi_read_value_range: "true",
+                  cdmi_sanitization_method: [],
+                  cdmi_size: "true",
+                  cdmi_throughput: "false",
+                  cdmi_value_hash: value_hash_methods
+              },
+              objectID: "#{oid}",
+              objectName: "permanent/",
+              objectType: "application/cdmi-capability",
+              parentID: "#{parentid}",
+              parentURI: "/cdmi_capabilities/dataobject/"
+    }
+    search_parm = get_domain_hash(system_domain_uri) <> "/cdmi_capabilities/dataobject/permanent/"
+    cdmi_object = %{cdmi: object,
+                    sp: "#{search_parm}"}
+    GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
+  @doc """
+  Create the capabilities domain member object.
+  """
+  defp create_capabilities_domain_member({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+                capabilities: %{
+                  cdmi_delete_dataobject: "true",
+                  cdmi_modify_deserialize_dataobject: "false",
+                  cdmi_modify_metadata: "true",
+                  cdmi_modify_value: "true",
+                  cdmi_modify_value_range: "true",
+                  cdmi_read_metadata: "true",
+                  cdmi_read_value: "true",
+                  cdmi_read_value_range: "true"
+              },
+              objectID: "#{oid}",
+              objectName: "member/",
+              objectType: "application/cdmi-capability",
+              parentID: "#{parentid}",
+              parentURI: "/cdmi_capabilities/dataobject/"
+    }
+    search_parm = get_domain_hash(system_domain_uri) <> "/cdmi_capabilities/domain/member/"
+    cdmi_object = %{cdmi: object,
+                    sp: "#{search_parm}"}
+    GenServer.call(Metadata, {:put, key, cdmi_object})
   end
 
   @doc """
