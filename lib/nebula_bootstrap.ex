@@ -775,7 +775,7 @@ defmodule NebulaBootstrap do
   defp create_domain_summary_period({oid, key}, parentid, adminid, period) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "/cdmi_capabilities/container/",
+      capabilitiesURI: "#{capabilities_uri}container/",
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
@@ -794,7 +794,7 @@ defmodule NebulaBootstrap do
       objectName: "#{period}",
       objectType: "application/cdmi-container",
       parentID: "#{parentid}",
-      parentURI: "/cdmi_domains/system_domain/cdmi_domain_summary/#{period}/"
+      parentURI: "/cdmi_domains/system_domain/cdmi_domain_summary/"
     }
     search_parm = get_domain_hash(object.domainURI) <>
                   "/cdmi_domains/system_domain/cdmi_domain_summary/#{period}/"
@@ -809,7 +809,7 @@ defmodule NebulaBootstrap do
     timestamp = make_timestamp()
     encrypted_pswd = encrypt(adminid, pswd)
     object = %{
-      capabilitiesURI: "#{capabilities_uri}/dataobject/member",
+      capabilitiesURI: "#{capabilities_uri}dataobject/member",
       completionStatus: "complete",
       domainURI: "#{system_domain_uri}",
       metadata: %{
@@ -832,9 +832,10 @@ defmodule NebulaBootstrap do
       objectName: "#{adminid}",
       objectType: "application/cdmi-domain",
       parentID: "#{parentid}",
-      parentURI: "/cdmi_domains/"
+      parentURI: "/cdmi_domains/system_domain/cdmi_domain_members/"
     }
-    search_parm = get_domain_hash(object.domainURI) <> "/cdmi_domains/system/domain/"
+    search_parm = get_domain_hash(object.domainURI) <>
+                                  "/cdmi_domains/system_domain/cdmi_domain_members/#{adminid}"
     cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
     GenServer.call(Metadata, {:put, key, cdmi_object})
   end
@@ -845,7 +846,7 @@ defmodule NebulaBootstrap do
   defp create_sysconfig({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "/cdmi_capabilities/container/permanent/",
+      capabilitiesURI: "#{capabilities_uri}container/permanent/",
       children: [
         "environment_variables",
         "domain_maps"
@@ -884,7 +885,7 @@ defmodule NebulaBootstrap do
     value = "{}"
     {hash_method, hashed_value} = value_hash(value, value_hash_methods)
     object = %{
-      capabilitiesURI: "/cdmi_capabilities/dataobject/permanent/",
+      capabilitiesURI: "#{capabilities_uri}dataobject/permanent/",
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
@@ -921,7 +922,7 @@ defmodule NebulaBootstrap do
   defp create_env_vars({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "/cdmi_capabilities/container/permanent/",
+      capabilitiesURI: "#{capabilities_uri}container/permanent/",
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
