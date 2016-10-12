@@ -5,9 +5,9 @@ defmodule NebulaBootstrap do
   defmacro acl_authenticated do
     quote do
       %{
-          aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
-          acemask: "READ",
-          acetype: "ALLOW",
+          aceflags: "0x03",
+          acemask: "0x1F",
+          acetype: "0x00",
           identifier: "AUTHENTICATED@"
       }
     end
@@ -16,9 +16,9 @@ defmodule NebulaBootstrap do
   defmacro acl_authenticated_inherited do
     quote do
       %{
-          aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
-          acemask: "READ",
-          acetype: "ALLOW",
+          aceflags: "0x83",
+          acemask: "0x1F",
+          acetype: "0x00",
           identifier: "AUTHENTICATED@"
       }
     end
@@ -27,9 +27,9 @@ defmodule NebulaBootstrap do
   defmacro acl_owner do
     quote do
       %{
-          aceflags: "OBJECT_INHERIT, CONTAINER_INHERIT",
-          acemask: "ALL_PERMS",
-          acetype: "ALLOW",
+          aceflags: "0x03",
+          acemask: "0x1f07ff",
+          acetype: "0x00",
           identifier: "OWNER@"
       }
     end
@@ -38,9 +38,9 @@ defmodule NebulaBootstrap do
   defmacro acl_owner_inherited do
     quote do
       %{
-          aceflags: "INHERITED, OBJECT_INHERIT, CONTAINER_INHERIT",
-          acemask: "ALL_PERMS",
-          acetype: "ALLOW",
+          aceflags: "0x83",
+          acemask: "0x1f07ff",
+          acetype: "0x00",
           identifier: "OWNER@"
       }
     end
