@@ -199,6 +199,7 @@ defmodule NebulaBootstrap do
     timestamp = make_timestamp()
     object = %{
       capabilities: %{
+        cdmi_acl: "true",
         cdmi_copy_dataobject_from_queue: "false",
         cdmi_copy_queue_by_ID: "false",
         cdmi_create_reference_by_ID: "false",
@@ -234,7 +235,7 @@ defmodule NebulaBootstrap do
         cdmi_query_value: "false",
         cdmi_queues: "false",
         cdmi_references: "false",
-        cdmi_security_access_control: "false",
+        cdmi_security_access_control: "true",
         cdmi_security_audit: "false",
         cdmi_security_data_integrity: "true",
         cdmi_security_immutability: "false",
@@ -321,6 +322,7 @@ defmodule NebulaBootstrap do
         cdmi_read_value: "false",
         cdmi_read_value_range: "false",
         cdmi_sanitization_method: [],
+        cdmi_security_access_control: "true",
         cdmi_serialize_container: "false",
         cdmi_serialize_dataobject: "false",
         cdmi_serialize_domain: "false",
@@ -403,6 +405,7 @@ defmodule NebulaBootstrap do
         cdmi_read_value: "false",
         cdmi_read_value_range: "false",
         cdmi_sanitization_method: [],
+        cdmi_security_access_control: "true",
         cdmi_serialize_container: "false",
         cdmi_serialize_dataobject: "false",
         cdmi_serialize_domain: "false",
@@ -465,6 +468,7 @@ defmodule NebulaBootstrap do
         cdmi_mtime: "true",
         cdmi_read_metadata: "true",
         cdmi_sanitization_method: [],
+        cdmi_security_access_control: "true",
         cdmi_size: "true",
         cdmi_throughput: "false",
         cdmi_value_hash: value_hash_methods
@@ -523,6 +527,7 @@ defmodule NebulaBootstrap do
         cdmi_read_value: "true",
         cdmi_read_value_range: "true",
         cdmi_sanitization_method: [],
+        cdmi_security_access_control: "true",
         cdmi_size: "true",
         cdmi_throughput: "false",
         cdmi_value_hash: value_hash_methods
@@ -580,6 +585,7 @@ defmodule NebulaBootstrap do
         cdmi_read_value: "true",
         cdmi_read_value_range: "true",
         cdmi_sanitization_method: [],
+        cdmi_security_access_control: "true",
         cdmi_size: "true",
         cdmi_throughput: "false",
         cdmi_value_hash: value_hash_methods
@@ -602,6 +608,7 @@ defmodule NebulaBootstrap do
     timestamp = make_timestamp()
     object = %{
       capabilities: %{
+        cdmi_acl: "true",
         cdmi_delete_dataobject: "true",
         cdmi_modify_deserialize_dataobject: "false",
         cdmi_modify_metadata: "true",
@@ -609,7 +616,8 @@ defmodule NebulaBootstrap do
         cdmi_modify_value_range: "true",
         cdmi_read_metadata: "true",
         cdmi_read_value: "true",
-        cdmi_read_value_range: "true"
+        cdmi_read_value_range: "true",
+        cdmi_security_access_control: "true",
       },
       objectID: "#{oid}",
       objectName: "member/",
