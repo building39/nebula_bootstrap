@@ -628,7 +628,7 @@ defmodule NebulaBootstrap do
   defp create_domains_container({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "#{capabilities_uri}",
+      capabilitiesURI: "#{capabilities_uri}container/permanent/",
       children: [
         "system_domain/"
       ],
@@ -662,7 +662,7 @@ defmodule NebulaBootstrap do
   defp create_system_domain({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "#{capabilities_uri}",
+      capabilitiesURI: "#{capabilities_uri}domain/",
       children: [
         "cdmi_domain_members/",
         "cdmi_domain_summary/"
@@ -680,7 +680,8 @@ defmodule NebulaBootstrap do
         cdmi_atime: "#{timestamp}",
         cdmi_ctime: "#{timestamp}",
         cdmi_mtime: "#{timestamp}",
-        cdmi_owner: "#{adminid}"
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
       },
       objectID: "#{oid}",
       objectName: "system_domain/",
@@ -699,7 +700,7 @@ defmodule NebulaBootstrap do
   defp create_domain_members_container({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "#{capabilities_uri}",
+      capabilitiesURI: "#{capabilities_uri}domain/",
       children: [
         "#{adminid}"
       ],
@@ -716,11 +717,12 @@ defmodule NebulaBootstrap do
         cdmi_atime: "#{timestamp}",
         cdmi_ctime: "#{timestamp}",
         cdmi_mtime: "#{timestamp}",
-        cdmi_owner: "#{adminid}"
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_members/",
-      objectType: "application/cdmi-container",
+      objectType: "application/cdmi-domain",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/"
     }
@@ -736,6 +738,7 @@ defmodule NebulaBootstrap do
   defp create_domain_summary({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
+      capabilitiesURI: "#{capabilities_uri}domain/",
       children: [
         "yearly/",
         "monthly/",
@@ -755,11 +758,12 @@ defmodule NebulaBootstrap do
         cdmi_atime: "#{timestamp}",
         cdmi_ctime: "#{timestamp}",
         cdmi_mtime: "#{timestamp}",
-        cdmi_owner: "#{adminid}"
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_summary/",
-      objectType: "application/cdmi-container",
+      objectType: "application/cdmi-domain",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/"
     }
@@ -775,7 +779,7 @@ defmodule NebulaBootstrap do
   defp create_domain_summary_period({oid, key}, parentid, adminid, period) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "#{capabilities_uri}container/",
+      capabilitiesURI: "#{capabilities_uri}domain/",
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
@@ -788,11 +792,12 @@ defmodule NebulaBootstrap do
         cdmi_atime: "#{timestamp}",
         cdmi_ctime: "#{timestamp}",
         cdmi_mtime: "#{timestamp}",
-        cdmi_owner: "#{adminid}"
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
       },
       objectID: "#{oid}",
       objectName: "#{period}",
-      objectType: "application/cdmi-container",
+      objectType: "application/cdmi-domain",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/cdmi_domain_summary/"
     }
@@ -809,7 +814,7 @@ defmodule NebulaBootstrap do
     timestamp = make_timestamp()
     encrypted_pswd = encrypt(adminid, pswd)
     object = %{
-      capabilitiesURI: "#{capabilities_uri}dataobject/member",
+      capabilitiesURI: "#{capabilities_uri}domain/member/",
       completionStatus: "complete",
       domainURI: "#{system_domain_uri}",
       metadata: %{
