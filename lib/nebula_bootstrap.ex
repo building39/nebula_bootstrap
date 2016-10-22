@@ -175,7 +175,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "#{system_domain_uri()}",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner(),
           acl_authenticated()
         ],
@@ -613,7 +613,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "#{system_domain_uri()}",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner_inherited(),
           acl_authenticated_inherited()
         ],
@@ -645,7 +645,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "#{system_domain_uri()}",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner(),
           acl_authenticated(),
           acl_owner_inherited(),
@@ -679,7 +679,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "#{system_domain_uri()}",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner(),
           acl_authenticated(),
           acl_owner_inherited(),
@@ -717,7 +717,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner(),
           acl_authenticated(),
           acl_owner_inherited(),
@@ -748,7 +748,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner(),
           acl_authenticated(),
           acl_owner_inherited(),
@@ -819,7 +819,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner(),
           acl_authenticated(),
           acl_owner_inherited(),
@@ -850,7 +850,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
-        cdmi_acls: [
+        cdmi_acl: [
           acl_owner(),
           acl_authenticated(),
           acl_owner_inherited(),
@@ -884,7 +884,7 @@ defmodule NebulaBootstrap do
       completionStatus: "complete",
       domainURI: "/cdmi_domains/system_domain/",
       metadata: %{
-        cdmi_acls:
+        cdmi_acl:
           [
             acl_owner(),
             acl_authenticated(),
