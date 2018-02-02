@@ -9,7 +9,7 @@ defmodule NebulaBootstrap.Mixfile do
   def project do
     [app: :nebula_bootstrap,
      version: "0.1.0",
-     elixir: "~> 1.6",
+     elixir: "~> 1.5",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      escript: [main_module: NebulaBootstrap],
@@ -40,7 +40,7 @@ defmodule NebulaBootstrap.Mixfile do
     [
       {:poison, "~> 2.0"},
       {:cdmioid, git: "https://github.com/building39/cdmioid.git", tag: "0.1.1"},
-      {:nebula_metadata, git: "git@github.com:building39/nebula_metadata.git", tag: "v0.2.5"}
+      {:nebula_metadata, git: "git@github.com:building39/nebula_metadata.git", tag: "v0.2.9"}
     ]
   end
 end
