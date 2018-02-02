@@ -29,6 +29,9 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
+config :memcache_client,
+  transcoder: Memcache.Client.Transcoder.Erlang
+
 config :pooler, pools:
   [
     [
@@ -36,6 +39,6 @@ config :pooler, pools:
       group: :riak,
       max_count: 10,
       init_count: 5,
-      start_mfa: { Riak.Connection, :start_link, ['192.168.69.64', 8087] }
+      start_mfa: { Riak.Connection, :start_link, ['10.138.69.11', 8087] }
     ]
   ]
