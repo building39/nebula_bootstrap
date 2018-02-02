@@ -69,10 +69,12 @@ defmodule NebulaBootstrap do
   end
 
   def main(args) do
-    args |> parse_args |> process
+    parms = args |> parse_args
+    IO.puts("parms are: #{inspect parms}")
+    process(parms)
   end
 
-  def process([]) do
+  def process({[], []}) do
     IO.puts("No arguments given")
   end
   def process({options, bootstrap_file}) do
@@ -81,6 +83,7 @@ defmodule NebulaBootstrap do
     {:adminid, adminid} = List.keyfind(options, :adminid, 0)
     System.put_env("CRC16_NIF_PATH", System.cwd() <> "/deps/elcrc16/priv/")
     {root_oid, root_key} = Cdmioid.generate(45241)
+    Logger.debug(fn -> "Creating root. oid: #{inspect root_oid} key: #{inspect root_key} adminid: #{inspect adminid}" end)
     create_root({root_oid, root_key}, adminid)
 
     {capabilities_oid, capabilities_key} = Cdmioid.generate(45241)
@@ -159,6 +162,7 @@ defmodule NebulaBootstrap do
         crc16nifpath: :string
       ]
     )
+    IO.puts("options: #{inspect options} bootstrap_file: #{inspect bootstrap_file}")
     {options, bootstrap_file}
   end
 
