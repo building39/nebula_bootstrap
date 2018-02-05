@@ -285,6 +285,7 @@ defmodule NebulaBootstrap do
       parentID: "#{parentid}",
       parentURI: "/"
     }
+
     search_parm = get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/"
     cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
     GenServer.call(Metadata, {:put, key, cdmi_object})
@@ -635,7 +636,7 @@ defmodule NebulaBootstrap do
   defp create_domains_container({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
-      capabilitiesURI: "#{capabilities_uri()}container/permanent/",
+      capabilitiesURI: "#{capabilities_uri()}domain/",
       children: [
         "system_domain/"
       ],
@@ -940,7 +941,7 @@ defmodule NebulaBootstrap do
   @doc """
   Encrypt.
   """
-  @spec encrypt(charlist, charlist) :: charlist
+  @spec encrypt(String.t, String.t) :: String.t
   def encrypt(key, message) do
     :crypto.hmac(:sha, key, message)
     |> Base.encode16
@@ -950,18 +951,17 @@ defmodule NebulaBootstrap do
   @doc """
   Calculate a hash for a domain.
   """
-  @spec get_domain_hash(charlist) :: charlist
-  def get_domain_hash(domain) when is_list(domain) do
-    get_domain_hash(<<domain>>)
-  end
-  @spec get_domain_hash(binary) :: charlist
+  @spec get_domain_hash(String.t | binary) :: String.t
   def get_domain_hash(domain) when is_binary(domain) do
     :crypto.hmac(:sha, <<"domain">>, domain)
     |> Base.encode16
     |> String.downcase
   end
+  def get_domain_hash(domain) do
+    get_domain_hash(<<domain>>)
+  end
 
-  @spec make_timestamp() :: charlist
+  @spec make_timestamp() :: String.t
   defp make_timestamp() do
     {{year, month, day}, {hour, minute, second}} =
       :calendar.now_to_universal_time(:os.timestamp)
@@ -969,7 +969,7 @@ defmodule NebulaBootstrap do
       [year, month, day, hour, minute, second]))
   end
 
-  @spec value_hash(charlist, list) :: tuple
+  @spec value_hash(String.t, list) :: tuple
   defp value_hash(value, methods) do
     hash_method = cond do
       "SHA512" in methods -> "SHA512"
