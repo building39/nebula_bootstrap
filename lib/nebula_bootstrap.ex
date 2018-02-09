@@ -132,7 +132,7 @@ defmodule NebulaBootstrap do
     {summary_oid, summary_key} = Cdmioid.generate(45241)
     create_domain_summary({summary_oid, summary_key}, sysdomain_oid, adminid)
 
-    for period <- ["daily", "weekly", "monthly", "yearly"] do
+    for period <- ["cumulative", "daily", "monthly", "yearly"] do
       {period_oid, period_key} = Cdmioid.generate(45241)
       create_domain_summary_period({period_oid, period_key}, summary_oid, adminid, period)
     end
@@ -739,9 +739,9 @@ defmodule NebulaBootstrap do
     object = %{
       capabilitiesURI: "#{capabilities_uri()}domain/",
       children: [
+        "cumulative/",
         "yearly/",
         "monthly/",
-        "weekly/",
         "daily/"
       ],
       childrenrange: "0-3",
