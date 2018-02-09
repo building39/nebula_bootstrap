@@ -804,28 +804,27 @@ defmodule NebulaBootstrap do
   end
 
   defp create_administrator_member({oid, key}, parentid, adminid, pswd) do
+    Logger.info("Creating domain member #{inspect adminid}")
     timestamp = make_timestamp()
     encrypted_pswd = encrypt(adminid, pswd)
     object = %{
       capabilitiesURI: "#{capabilities_uri()}domain/member/",
+      cdmi_atime: "#{timestamp}",
+      cdmi_ctime: "#{timestamp}",
+      cdmi_mtime: "#{timestamp}",
+      cdmi_member_credentials: "#{encrypted_pswd}",
+      cdmi_member_enabled: "true",
+      cdmi_member_groups: [],
+      cdmi_member_name: "#{adminid}",
+      cdmi_member_principal: "#{adminid}",
+      cdmi_member_privileges: [
+        "cross_domain",
+        "administrator"
+      ],
+      cdmi_member_type: "user",
+      cdmi_owner: "#{adminid}",
       completionStatus: "complete",
       domainURI: "#{system_domain_uri()}",
-      metadata: %{
-        cdmi_atime: "#{timestamp}",
-        cdmi_ctime: "#{timestamp}",
-        cdmi_mtime: "#{timestamp}",
-        cdmi_member_credentials: "#{encrypted_pswd}",
-        cdmi_member_enabled: "true",
-        cdmi_member_groups: [],
-        cdmi_member_name: "#{adminid}",
-        cdmi_member_principal: "#{adminid}",
-        cdmi_member_privileges: [
-          "cross_domain",
-          "administrator"
-        ],
-        cdmi_member_type: "user",
-        cdmi_owner: "#{adminid}"
-      },
       objectID: "#{oid}",
       objectName: "#{adminid}",
       objectType: "application/cdmi-domain",
