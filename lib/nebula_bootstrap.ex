@@ -724,7 +724,7 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_members/",
-      objectType: "application/cdmi-domain",
+      objectType: "application/container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/"
     }
@@ -762,7 +762,7 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_summary/",
-      objectType: "application/cdmi-domain",
+      objectType: "application/container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/"
     }
@@ -792,8 +792,8 @@ defmodule NebulaBootstrap do
         cdmi_domain_enabled: "true"
       },
       objectID: "#{oid}",
-      objectName: "#{period}",
-      objectType: "application/cdmi-domain",
+      objectName: "#{period}/",
+      objectType: "application/container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/cdmi_domain_summary/"
     }
