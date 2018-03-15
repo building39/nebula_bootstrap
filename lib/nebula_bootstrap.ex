@@ -50,6 +50,10 @@ defmodule NebulaBootstrap do
     "/cdmi_capabilities/"
   end
 
+  defmacro default_domain_uri do
+    "/cdmi_domains/default_domain/"
+  end
+
   defmacro system_domain_uri do
     "/cdmi_domains/system_domain/"
   end
@@ -126,8 +130,14 @@ defmodule NebulaBootstrap do
     {sysdomain_oid, sysdomain_key} = Cdmioid.generate(45241)
     create_system_domain({sysdomain_oid, sysdomain_key}, domaincontainer_oid, adminid)
 
+    {defdomain_oid, defdomain_key} = Cdmioid.generate(45241)
+    create_default_domain({defdomain_oid, defdomain_key}, domaincontainer_oid, adminid)
+
     {members_oid, members_key} = Cdmioid.generate(45241)
     create_domain_members_container({members_oid, members_key}, sysdomain_oid, adminid)
+
+    {defmembers_oid, defmembers_key} = Cdmioid.generate(45241)
+    create_default_domain_members_container({defmembers_oid, defmembers_key}, defdomain_oid, adminid)
 
     {summary_oid, summary_key} = Cdmioid.generate(45241)
     create_domain_summary({summary_oid, summary_key}, sysdomain_oid, adminid)
@@ -135,6 +145,14 @@ defmodule NebulaBootstrap do
     for period <- ["cumulative", "daily", "monthly", "yearly"] do
       {period_oid, period_key} = Cdmioid.generate(45241)
       create_domain_summary_period({period_oid, period_key}, summary_oid, adminid, period)
+    end
+
+    {defsummary_oid, defsummary_key} = Cdmioid.generate(45241)
+    create_default_domain_summary({defsummary_oid, defsummary_key}, defdomain_oid, adminid)
+
+    for period <- ["cumulative", "daily", "monthly", "yearly"] do
+      {period_oid, period_key} = Cdmioid.generate(45241)
+      create_default_domain_summary_period({period_oid, period_key}, defsummary_oid, adminid, period)
     end
 
     {:adminpw, pswd} = List.keyfind(options, :adminpw, 0)
@@ -638,6 +656,7 @@ defmodule NebulaBootstrap do
     object = %{
       capabilitiesURI: "#{capabilities_uri()}domain/",
       children: [
+        "default_domain/",
         "system_domain/"
       ],
       childrenrange: "0-0",
@@ -660,6 +679,41 @@ defmodule NebulaBootstrap do
       parentURI: "/"
     }
     search_parm = get_domain_hash(object.domainURI) <> "/cdmi_domains/"
+    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
+    GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
+  defp create_default_domain({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+      capabilitiesURI: "#{capabilities_uri()}domain/",
+      children: [
+        "cdmi_domain_members/",
+        "cdmi_domain_summary/"
+      ],
+      childrenrange: "0-1",
+      completionStatus: "complete",
+      domainURI: "#{default_domain_uri()}",
+      metadata: %{
+        cdmi_acl: [
+          acl_owner(),
+          acl_authenticated(),
+          acl_owner_inherited(),
+          acl_authenticated_inherited()
+        ],
+        cdmi_atime: "#{timestamp}",
+        cdmi_ctime: "#{timestamp}",
+        cdmi_mtime: "#{timestamp}",
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
+      },
+      objectID: "#{oid}",
+      objectName: "default_domain/",
+      objectType: "application/cdmi-domain",
+      parentID: "#{parentid}",
+      parentURI: "/cdmi_domains/"
+    }
+    search_parm = get_domain_hash(object.domainURI) <> "/cdmi_domains/default_domain/"
     cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
     GenServer.call(Metadata, {:put, key, cdmi_object})
   end
@@ -734,6 +788,40 @@ defmodule NebulaBootstrap do
     GenServer.call(Metadata, {:put, key, cdmi_object})
   end
 
+  defp create_default_domain_members_container({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+      capabilitiesURI: "#{capabilities_uri()}domain/",
+      children: [
+      ],
+      childrenrange: "",
+      completionStatus: "complete",
+      domainURI: "#{default_domain_uri()}",
+      metadata: %{
+        cdmi_acl: [
+          acl_owner(),
+          acl_authenticated(),
+          acl_owner_inherited(),
+          acl_authenticated_inherited()
+        ],
+        cdmi_atime: "#{timestamp}",
+        cdmi_ctime: "#{timestamp}",
+        cdmi_mtime: "#{timestamp}",
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
+      },
+      objectID: "#{oid}",
+      objectName: "cdmi_domain_members/",
+      objectType: "application/container",
+      parentID: "#{parentid}",
+      parentURI: "/cdmi_domains/default_domain/"
+    }
+    search_parm = get_domain_hash(object.domainURI) <>
+                  "/cdmi_domains/system_domain/cdmi_domain_members/"
+    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
+    GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
   defp create_domain_summary({oid, key}, parentid, adminid) do
     timestamp = make_timestamp()
     object = %{
@@ -768,6 +856,75 @@ defmodule NebulaBootstrap do
     }
     search_parm = get_domain_hash(object.domainURI) <>
                   "/cdmi_domains/system_domain/cdmi_domain_summary/"
+    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
+    GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
+  defp create_default_domain_summary({oid, key}, parentid, adminid) do
+    timestamp = make_timestamp()
+    object = %{
+      capabilitiesURI: "#{capabilities_uri()}domain/",
+      children: [
+        "cumulative/",
+        "yearly/",
+        "monthly/",
+        "daily/"
+      ],
+      childrenrange: "0-3",
+      completionStatus: "complete",
+      domainURI: "/cdmi_domains/default_domain/",
+      metadata: %{
+        cdmi_acl: [
+          acl_owner(),
+          acl_authenticated(),
+          acl_owner_inherited(),
+          acl_authenticated_inherited()
+        ],
+        cdmi_atime: "#{timestamp}",
+        cdmi_ctime: "#{timestamp}",
+        cdmi_mtime: "#{timestamp}",
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
+      },
+      objectID: "#{oid}",
+      objectName: "cdmi_domain_summary/",
+      objectType: "application/container",
+      parentID: "#{parentid}",
+      parentURI: "/cdmi_domains/default_domain/"
+    }
+    search_parm = get_domain_hash(object.domainURI) <>
+                  "/cdmi_domains/default_domain/cdmi_domain_summary/"
+    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
+    GenServer.call(Metadata, {:put, key, cdmi_object})
+  end
+
+  defp create_default_domain_summary_period({oid, key}, parentid, adminid, period) do
+    timestamp = make_timestamp()
+    object = %{
+      capabilitiesURI: "#{capabilities_uri()}domain/",
+      completionStatus: "complete",
+      domainURI: "/cdmi_domains/default_domain/",
+      metadata: %{
+        cdmi_acl: [
+          acl_owner(),
+          acl_authenticated(),
+          acl_owner_inherited(),
+          acl_authenticated_inherited()
+        ],
+        cdmi_atime: "#{timestamp}",
+        cdmi_ctime: "#{timestamp}",
+        cdmi_mtime: "#{timestamp}",
+        cdmi_owner: "#{adminid}",
+        cdmi_domain_enabled: "true"
+      },
+      objectID: "#{oid}",
+      objectName: "#{period}/",
+      objectType: "application/container",
+      parentID: "#{parentid}",
+      parentURI: "/cdmi_domains/default_domain/cdmi_domain_summary/"
+    }
+    search_parm = get_domain_hash(object.domainURI) <>
+                  "/cdmi_domains/default_domain/cdmi_domain_summary/#{period}/"
     cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
     GenServer.call(Metadata, {:put, key, cdmi_object})
   end
