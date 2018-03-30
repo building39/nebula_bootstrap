@@ -850,7 +850,7 @@ defmodule NebulaBootstrap do
     timestamp = make_timestamp()
 
     object = %{
-      capabilitiesURI: "#{capabilities_uri()}domain/",
+      capabilitiesURI: "#{capabilities_uri()}container/",
       children: [],
       childrenrange: "",
       completionStatus: "complete",
@@ -875,9 +875,7 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_domains/default_domain/"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <> "/cdmi_domains/system_domain/cdmi_domain_members/"
-
+    search_parm = get_domain_hash(object.domainURI) <> object.domainURI <> "cdmi_domain_members/"
     cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
     GenServer.call(Metadata, {:put, key, cdmi_object})
   end
