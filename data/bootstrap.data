@@ -1,6 +1,5 @@
 [
     {
-        "cdmi": {
             "capabilities": {
                 "cdmi_RPO": "false",
                 "cdmi_RTO": "false",
@@ -79,11 +78,8 @@
             "objectType": "application/cdmi-capability",
             "parentID": "d3e8b630251b4d8bbc3fdf0cc73cd35d00045241004824e6",
             "parentURI": "/cdmi_capabilities/"
-        },
-        "sp": "e1c36ee8b6b76553d8977eb4737df5b996b418bd/cdmi_capabilities/container/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/dataobject/member/",
             "completionStatus": "complete",
             "domainURI": "/cdmi_domains/system_domain/",
@@ -129,11 +125,8 @@
             "value": "{\"cdmi_member_enabled\": \"true\",\"cdmi_member_type\": \"user\", \"cdmi_member_name\": \"administrator\",\"cdmi_member_credentials\": \"78dafab8554625399ebd1f8d2a74258ae2096d33\",\"cdmi_member_principal\": \"administrator\",\"cdmi_member_privileges\": [\"cross_domain\", \"administrator\"],\"cdmi_member_groups\": []}",
             "valuerange": "0-290",
             "valuetransferencoding": "utf-8"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/cdmi_domain_members/administrator"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/domain/",
             "children": [
                 "system_domain/"
@@ -166,8 +159,6 @@
             "objectType": "application/cdmi-container",
             "parentID": "9acc207191e54461843e5aff43f5dae5000452410048c2b",
             "parentURI": "/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/"
     },
     {
         "cdmi": {
@@ -218,11 +209,8 @@
             "objectType": "application/cdmi-container",
             "parentID": "40aa3dcc38594d76b96d410a11c02bf0000452410048b8c7",
             "parentURI": "/cdmi_domains/system_domain/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/cdmi_domain_summary/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/container/",
             "completionStatus": "complete",
             "domainURI": "/cdmi_domains/system_domain/",
@@ -263,11 +251,8 @@
             "objectType": "application/cdmi-container",
             "parentID": "1218c094de4d4297be8a3db17c30d35200045241004860a9",
             "parentURI": "/cdmi_domains/system_domain/cdmi_domain_summary/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/cdmi_domain_summary/monthly/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/container/",
             "children": [
                 "administrator"
@@ -312,11 +297,8 @@
             "objectType": "application/cdmi-container",
             "parentID": "40aa3dcc38594d76b96d410a11c02bf0000452410048b8c7",
             "parentURI": "/cdmi_domains/system_domain/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/cdmi_domain_members/"
     },
     {
-        "cdmi": {
             "capabilities": {
                 "cdmi_RPO": "false",
                 "cdmi_RTO": "false",
@@ -366,11 +348,8 @@
             "objectType": "application/cdmi-capability",
             "parentID": "425a06142a7046789dd43a16e04e766b000452410048fa98",
             "parentURI": "/cdmi_capabilities/dataobject/"
-        },
-        "sp": "e1c36ee8b6b76553d8977eb4737df5b996b418bd/cdmi_capabilities/dataobject/permanent/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/container/",
             "completionStatus": "complete",
             "domainURI": "/cdmi_domains/system_domain/",
@@ -411,11 +390,8 @@
             "objectType": "application/cdmi-container",
             "parentID": "1218c094de4d4297be8a3db17c30d35200045241004860a9",
             "parentURI": "/cdmi_domains/system_domain/cdmi_domain_summary/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/cdmi_domain_summary/daily/"
     },
     {
-        "cdmi": {
             "capabilities": {
                 "cdmi_RPO": "false",
                 "cdmi_RTO": "false",
@@ -490,11 +466,8 @@
             "objectType": "application/cdmi-capability",
             "parentID": "f55ac334b0284509a4c834b87ef4fd3f000452410048aed7",
             "parentURI": "/cdmi_capabilities/container/"
-        },
-        "sp": "e1c36ee8b6b76553d8977eb4737df5b996b418bd/cdmi_capabilities/container/permanent/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/container/",
             "completionStatus": "complete",
             "domainURI": "/cdmi_domains/system_domain/",
@@ -535,11 +508,8 @@
             "objectType": "application/cdmi-container",
             "parentID": "1218c094de4d4297be8a3db17c30d35200045241004860a9",
             "parentURI": "/cdmi_domains/system_domain/cdmi_domain_summary/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/cdmi_domain_summary/yearly/"
     },
     {
-        "cdmi": {
             "capabilities": {
                 "cdmi_RPO": "false",
                 "cdmi_RTO": "false",
@@ -595,11 +565,8 @@
             "objectType": "application/cdmi-capability",
             "parentID": "d3e8b630251b4d8bbc3fdf0cc73cd35d00045241004824e6",
             "parentURI": "/cdmi_capabilities/"
-        },
-        "sp": "e1c36ee8b6b76553d8977eb4737df5b996b418bd/cdmi_capabilities/dataobject/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/container/permanent/",
             "completionStatus": "complete",
             "domainURI": "/cdmi_domains/system_domain/",
@@ -640,11 +607,8 @@
             "objectType": "application/cdmi-container",
             "parentID": "5d983ae7dc334d868222d6db0b7b10ca000452410048498c",
             "parentURI": "/system_configuration/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/system_configuration/environment_variables/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/container/",
             "completionStatus": "complete",
             "domainURI": "/cdmi_domains/system_domain/",
@@ -685,11 +649,8 @@
             "objectType": "application/cdmi-container",
             "parentID": "1218c094de4d4297be8a3db17c30d35200045241004860a9",
             "parentURI": "/cdmi_domains/system_domain/cdmi_domain_summary/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/cdmi_domain_summary/weekly/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/dataobject/permanent/",
             "completionStatus": "complete",
             "domainURI": "/cdmi_domains/system_domain/",
@@ -736,8 +697,6 @@
             "valuerange": "0-1",
             "valuetransferencoding": "utf-8"
         },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/system_configuration/domain_maps"
-    },
     {
         "cdmi": {
             "capabilities": {
@@ -793,8 +752,6 @@
             "objectType": "application/cdmi-capability",
             "parentID": "d3e8b630251b4d8bbc3fdf0cc73cd35d00045241004824e6",
             "parentURI": "/cdmi_capabilities/"
-        },
-        "sp": "e1c36ee8b6b76553d8977eb4737df5b996b418bd/cdmi_capabilities/domain/"
     },
     {
         "cdmi": {
@@ -843,11 +800,8 @@
             "objectType": "application/cdmi-domain",
             "parentID": "237b93c4b5d546ae87fee99de1a7fef800045241004835ab",
             "parentURI": "/cdmi_domains/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/cdmi_domains/system_domain/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/",
             "children": [
                 "cdmi_domains/",
@@ -880,8 +834,6 @@
             "objectID": "9acc207191e54461843e5aff43f5dae5000452410048c2b",
             "objectName": "/",
             "objectType": "application/cdmi-container"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/"
     },
     {
         "cdmi": {
@@ -900,11 +852,8 @@
             "objectType": "application/cdmi-capability",
             "parentID": "425a06142a7046789dd43a16e04e766b000452410048fa98",
             "parentURI": "/cdmi_capabilities/dataobject/"
-        },
-        "sp": "e1c36ee8b6b76553d8977eb4737df5b996b418bd/cdmi_capabilities/dataobject/member/"
     },
     {
-        "cdmi": {
             "capabilities": {
                 "cdmi_copy_dataobject_from_queue": "false",
                 "cdmi_copy_queue_by_ID": "false",
@@ -964,11 +913,8 @@
             "objectType": "application/cdmi-capability",
             "parentID": "9acc207191e54461843e5aff43f5dae5000452410048c2b",
             "parentURI": "/"
-        },
-        "sp": "e1c36ee8b6b76553d8977eb4737df5b996b418bd/cdmi_capabilities/"
     },
     {
-        "cdmi": {
             "capabilitiesURI": "/cdmi_capabilities/container/permanent/",
             "children": [
                 "environment_variables/",
@@ -1014,7 +960,5 @@
             "objectType": "application/cdmi-container",
             "parentID": "9acc207191e54461843e5aff43f5dae5000452410048c2b",
             "parentURI": "/"
-        },
-        "sp": "c8c17baf9a68a8dbc75b818b24269ebca06b0f31/system_configuration/"
     }
 ]

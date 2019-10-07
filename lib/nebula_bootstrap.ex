@@ -72,6 +72,7 @@ defmodule NebulaBootstrap do
   end
 
   def main(args) do
+    IO.puts("ARGS: #{inspect(args)}")
     parms = args |> parse_args
     IO.puts("parms are: #{inspect(parms)}")
     process(parms)
@@ -86,103 +87,103 @@ defmodule NebulaBootstrap do
     for n <- options, do: IO.inspect(n)
     {:adminid, adminid} = List.keyfind(options, :adminid, 0)
     System.put_env("CRC16_NIF_PATH", System.cwd() <> "/deps/elcrc16/priv/")
-    {root_oid, root_key} = Cdmioid.generate(45241)
+    root_oid = Cdmioid.generate(45241)
 
     Logger.debug(fn ->
-      "Creating root. oid: #{inspect(root_oid)} key: #{inspect(root_key)} adminid: #{
+      "Creating root. oid: #{inspect(root_oid)} adminid: #{
         inspect(adminid)
       }"
     end)
 
-    create_root({root_oid, root_key}, adminid)
+    create_root(root_oid, adminid)
 
-    {capabilities_oid, capabilities_key} = Cdmioid.generate(45241)
-    create_capabilities({capabilities_oid, capabilities_key}, root_oid, adminid)
+    capabilities_oid = Cdmioid.generate(45241)
+    create_capabilities(capabilities_oid, root_oid, adminid)
 
-    {capabilities_container_oid, capabilities_container_key} = Cdmioid.generate(45241)
+    capabilities_container_oid = Cdmioid.generate(45241)
 
     create_capabilities_container(
-      {capabilities_container_oid, capabilities_container_key},
+      capabilities_container_oid,
       capabilities_oid,
       adminid
     )
 
-    {capabilities_dataobject_oid, capabilities_dataobject_key} = Cdmioid.generate(45241)
+    capabilities_dataobject_oid = Cdmioid.generate(45241)
 
     create_capabilities_dataobject(
-      {capabilities_dataobject_oid, capabilities_dataobject_key},
+      capabilities_dataobject_oid,
       capabilities_oid,
       adminid
     )
 
-    {capabilities_domain_oid, capabilities_domain_key} = Cdmioid.generate(45241)
+    capabilities_domain_oid = Cdmioid.generate(45241)
 
     create_capabilities_domain(
-      {capabilities_domain_oid, capabilities_domain_key},
+      capabilities_domain_oid,
       capabilities_oid,
       adminid
     )
 
-    {capabilities_container_perm_oid, capabilities_container_perm_key} = Cdmioid.generate(45241)
+    capabilities_container_perm_oid = Cdmioid.generate(45241)
 
     create_capabilities_container_perm(
-      {capabilities_container_perm_oid, capabilities_container_perm_key},
+      capabilities_container_perm_oid,
       capabilities_container_oid,
       adminid
     )
 
-    {capabilities_dataobject_perm_oid, capabilities_dataobject_perm_key} = Cdmioid.generate(45241)
+    capabilities_dataobject_perm_oid = Cdmioid.generate(45241)
 
     create_capabilities_dataobject_perm(
-      {capabilities_dataobject_perm_oid, capabilities_dataobject_perm_key},
+      capabilities_dataobject_perm_oid,
       capabilities_dataobject_oid,
       adminid
     )
 
-    {capabilities_domain_member_oid, capabilities_domain_member_key} = Cdmioid.generate(45241)
+    capabilities_domain_member_oid = Cdmioid.generate(45241)
 
     create_capabilities_domain_member(
-      {capabilities_domain_member_oid, capabilities_domain_member_key},
+      capabilities_domain_member_oid,
       capabilities_domain_oid,
       adminid
     )
 
-    {domaincontainer_oid, domaincontainer_key} = Cdmioid.generate(45241)
-    create_domains_container({domaincontainer_oid, domaincontainer_key}, root_oid, adminid)
+    domaincontainer_oid = Cdmioid.generate(45241)
+    create_domains_container(domaincontainer_oid, root_oid, adminid)
 
-    {sysdomain_oid, sysdomain_key} = Cdmioid.generate(45241)
-    create_system_domain({sysdomain_oid, sysdomain_key}, domaincontainer_oid, adminid)
+    sysdomain_oid = Cdmioid.generate(45241)
+    create_system_domain(sysdomain_oid, domaincontainer_oid, adminid)
 
-    {defdomain_oid, defdomain_key} = Cdmioid.generate(45241)
-    create_default_domain({defdomain_oid, defdomain_key}, domaincontainer_oid, adminid)
+    defdomain_oid = Cdmioid.generate(45241)
+    create_default_domain(defdomain_oid, domaincontainer_oid, adminid)
 
-    {members_oid, members_key} = Cdmioid.generate(45241)
-    create_domain_members_container({members_oid, members_key}, sysdomain_oid, adminid)
+    members_oid = Cdmioid.generate(45241)
+    create_domain_members_container(members_oid, sysdomain_oid, adminid)
 
-    {defmembers_oid, defmembers_key} = Cdmioid.generate(45241)
+    defmembers_oid = Cdmioid.generate(45241)
 
     create_default_domain_members_container(
-      {defmembers_oid, defmembers_key},
+      defmembers_oid,
       defdomain_oid,
       adminid
     )
 
-    {summary_oid, summary_key} = Cdmioid.generate(45241)
-    create_domain_summary({summary_oid, summary_key}, sysdomain_oid, adminid)
+    summary_oid = Cdmioid.generate(45241)
+    create_domain_summary(summary_oid, sysdomain_oid, adminid)
 
     for period <- ["cumulative", "daily", "monthly", "yearly"] do
-      {period_oid, period_key} = Cdmioid.generate(45241)
-      create_domain_summary_period({period_oid, period_key}, summary_oid, adminid, period)
+      period_oid = Cdmioid.generate(45241)
+      create_domain_summary_period(period_oid, summary_oid, adminid, period)
     end
 
-    {defsummary_oid, defsummary_key} = Cdmioid.generate(45241)
-    create_default_domain_summary({defsummary_oid, defsummary_key}, defdomain_oid, adminid)
+    defsummary_oid = Cdmioid.generate(45241)
+    create_default_domain_summary(defsummary_oid, defdomain_oid, adminid)
 
     for period <- ["cumulative", "daily", "monthly", "yearly"] do
-      {period_oid, period_key} = Cdmioid.generate(45241)
+      period_oid = Cdmioid.generate(45241)
 
       create_default_domain_summary_period(
-        {period_oid, period_key},
+        period_oid,
         defsummary_oid,
         adminid,
         period
@@ -190,17 +191,17 @@ defmodule NebulaBootstrap do
     end
 
     {:adminpw, pswd} = List.keyfind(options, :adminpw, 0)
-    {admin_oid, admin_key} = Cdmioid.generate(45241)
-    create_administrator_member({admin_oid, admin_key}, members_oid, adminid, pswd)
+    admin_oid = Cdmioid.generate(45241)
+    create_administrator_member(admin_oid, members_oid, adminid, pswd)
 
-    {sysconfig_oid, sysconfig_key} = Cdmioid.generate(45241)
-    create_sysconfig({sysconfig_oid, sysconfig_key}, root_oid, adminid)
+    sysconfig_oid = Cdmioid.generate(45241)
+    create_sysconfig(sysconfig_oid, root_oid, adminid)
 
-    {domain_maps_oid, domain_maps_key} = Cdmioid.generate(45241)
-    create_domain_maps({domain_maps_oid, domain_maps_key}, sysconfig_oid, adminid)
+    domain_maps_oid = Cdmioid.generate(45241)
+    create_domain_maps(domain_maps_oid, sysconfig_oid, adminid)
 
-    {env_vars_oid, env_vars_key} = Cdmioid.generate(45241)
-    create_env_vars({env_vars_oid, env_vars_key}, sysconfig_oid, adminid)
+    env_vars_oid = Cdmioid.generate(45241)
+    create_env_vars(env_vars_oid, sysconfig_oid, adminid)
   end
 
   defp parse_args(args) do
@@ -220,7 +221,7 @@ defmodule NebulaBootstrap do
     {options, bootstrap_file}
   end
 
-  defp create_root({oid, key}, adminid) do
+  defp create_root(oid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -248,12 +249,11 @@ defmodule NebulaBootstrap do
       objectType: "application/cdmi-container"
     }
 
-    search_parm = get_domain_hash(object.domainURI) <> "/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    Logger.debug("Creating object: #{inspect(object, pretty: true)}")
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_capabilities({oid, key}, parentid, _adminid) do
+  defp create_capabilities(oid, parentid, _adminid) do
     object = %{
       capabilities: %{
         cdmi_acl: "true",
@@ -343,12 +343,10 @@ defmodule NebulaBootstrap do
       parentURI: "/"
     }
 
-    search_parm = get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_capabilities_container({oid, key}, parentid, _adminid) do
+  defp create_capabilities_container(oid, parentid, _adminid) do
     object = %{
       capabilities: %{
         cdmi_RPO: "false",
@@ -423,12 +421,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_capabilities/"
     }
 
-    search_parm = get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/container/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_capabilities_container_perm({oid, key}, parentid, _adminid) do
+  defp create_capabilities_container_perm(oid, parentid, _adminid) do
     object = %{
       capabilities: %{
         cdmi_RPO: "false",
@@ -499,14 +495,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_capabilities/container/"
     }
 
-    search_parm =
-      get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/container/permanent/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_capabilities_domain({oid, key}, parentid, _adminid) do
+  defp create_capabilities_domain(oid, parentid, _adminid) do
     object = %{
       capabilities: %{
         cdmi_RPO: "false",
@@ -560,12 +552,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_capabilities/"
     }
 
-    search_parm = get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/domain/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_capabilities_dataobject({oid, key}, parentid, _adminid) do
+  defp create_capabilities_dataobject(oid, parentid, _adminid) do
     object = %{
       capabilities: %{
         cdmi_RPO: "false",
@@ -616,12 +606,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_capabilities/"
     }
 
-    search_parm = get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/dataobject/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_capabilities_dataobject_perm({oid, key}, parentid, _adminid) do
+  defp create_capabilities_dataobject_perm(oid, parentid, _adminid) do
     object = %{
       capabilities: %{
         cdmi_RPO: "false",
@@ -667,14 +655,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_capabilities/dataobject/"
     }
 
-    search_parm =
-      get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/dataobject/permanent/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_capabilities_domain_member({oid, key}, parentid, _adminid) do
+  defp create_capabilities_domain_member(oid, parentid, _adminid) do
     object = %{
       capabilities: %{
         cdmi_acl: "true",
@@ -695,12 +679,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_capabilities/domain/"
     }
 
-    search_parm = get_domain_hash(system_domain_uri()) <> "/cdmi_capabilities/domain/member/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_domains_container({oid, key}, parentid, adminid) do
+  defp create_domains_container(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -709,7 +691,7 @@ defmodule NebulaBootstrap do
         "default_domain/",
         "system_domain/"
       ],
-      childrenrange: "0-0",
+      childrenrange: "0-1",
       completionStatus: "complete",
       domainURI: "#{system_domain_uri()}",
       metadata: %{
@@ -729,12 +711,10 @@ defmodule NebulaBootstrap do
       parentURI: "/"
     }
 
-    search_parm = get_domain_hash(object.domainURI) <> "/cdmi_domains/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_default_domain({oid, key}, parentid, adminid) do
+  defp create_default_domain(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -745,7 +725,7 @@ defmodule NebulaBootstrap do
       ],
       childrenrange: "0-1",
       completionStatus: "complete",
-      domainURI: "#{default_domain_uri()}",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -766,12 +746,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_domains/"
     }
 
-    search_parm = get_domain_hash(object.domainURI) <> "/cdmi_domains/default_domain/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_system_domain({oid, key}, parentid, adminid) do
+  defp create_system_domain(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -803,12 +781,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_domains/"
     }
 
-    search_parm = get_domain_hash(object.domainURI) <> "/cdmi_domains/system_domain/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_domain_members_container({oid, key}, parentid, adminid) do
+  defp create_domain_members_container(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -834,19 +810,15 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_members/",
-      objectType: "application/container",
+      objectType: "application/cdmi-container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <> "/cdmi_domains/system_domain/cdmi_domain_members/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_default_domain_members_container({oid, key}, parentid, adminid) do
+  defp create_default_domain_members_container(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -854,7 +826,7 @@ defmodule NebulaBootstrap do
       children: [],
       childrenrange: "",
       completionStatus: "complete",
-      domainURI: "#{default_domain_uri()}",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -870,17 +842,15 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_members/",
-      objectType: "application/container",
+      objectType: "application/cdmi-container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/default_domain/"
     }
 
-    search_parm = get_domain_hash(object.domainURI) <> object.domainURI <> "cdmi_domain_members/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_domain_summary({oid, key}, parentid, adminid) do
+  defp create_domain_summary(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -893,7 +863,7 @@ defmodule NebulaBootstrap do
       ],
       childrenrange: "0-3",
       completionStatus: "complete",
-      domainURI: "/cdmi_domains/system_domain/",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -909,19 +879,15 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_summary/",
-      objectType: "application/container",
+      objectType: "application/cdmi-container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <> "/cdmi_domains/system_domain/cdmi_domain_summary/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_default_domain_summary({oid, key}, parentid, adminid) do
+  defp create_default_domain_summary(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -934,7 +900,7 @@ defmodule NebulaBootstrap do
       ],
       childrenrange: "0-3",
       completionStatus: "complete",
-      domainURI: "/cdmi_domains/default_domain/",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -950,25 +916,21 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "cdmi_domain_summary/",
-      objectType: "application/container",
+      objectType: "application/cdmi-container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/default_domain/"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <> "/cdmi_domains/default_domain/cdmi_domain_summary/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_default_domain_summary_period({oid, key}, parentid, adminid, period) do
+  defp create_default_domain_summary_period(oid, parentid, adminid, period) do
     timestamp = make_timestamp()
 
     object = %{
       capabilitiesURI: "#{capabilities_uri()}domain/",
       completionStatus: "complete",
-      domainURI: "/cdmi_domains/default_domain/",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -984,26 +946,21 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "#{period}/",
-      objectType: "application/container",
+      objectType: "application/cdmi-container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/default_domain/cdmi_domain_summary/"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <>
-        "/cdmi_domains/default_domain/cdmi_domain_summary/#{period}/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_domain_summary_period({oid, key}, parentid, adminid, period) do
+  defp create_domain_summary_period(oid, parentid, adminid, period) do
     timestamp = make_timestamp()
 
     object = %{
       capabilitiesURI: "#{capabilities_uri()}domain/",
       completionStatus: "complete",
-      domainURI: "/cdmi_domains/system_domain/",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -1019,20 +976,15 @@ defmodule NebulaBootstrap do
       },
       objectID: "#{oid}",
       objectName: "#{period}/",
-      objectType: "application/container",
+      objectType: "application/cdmi-container",
       parentID: "#{parentid}",
       parentURI: "/cdmi_domains/system_domain/cdmi_domain_summary/"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <>
-        "/cdmi_domains/system_domain/cdmi_domain_summary/#{period}/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_administrator_member({oid, key}, parentid, adminid, pswd) do
+  defp create_administrator_member(oid, parentid, adminid, pswd) do
     Logger.info("Creating domain member #{inspect(adminid)}")
     timestamp = make_timestamp()
     encrypted_pswd = encrypt(adminid, pswd)
@@ -1064,15 +1016,10 @@ defmodule NebulaBootstrap do
       parentURI: "/cdmi_domains/system_domain/cdmi_domain_members/"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <>
-        "/cdmi_domains/system_domain/cdmi_domain_members/#{adminid}"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_sysconfig({oid, key}, parentid, adminid) do
+  defp create_sysconfig(oid, parentid, adminid) do
     timestamp = make_timestamp()
 
     object = %{
@@ -1083,7 +1030,7 @@ defmodule NebulaBootstrap do
       ],
       childrenrange: "0-1",
       completionStatus: "complete",
-      domainURI: "/cdmi_domains/system_domain/",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -1103,12 +1050,10 @@ defmodule NebulaBootstrap do
       parentURI: "/"
     }
 
-    search_parm = get_domain_hash(object.domainURI) <> "/system_configuration/"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_domain_maps({oid, key}, parentid, adminid) do
+  defp create_domain_maps(oid, parentid, adminid) do
     timestamp = make_timestamp()
     value = "{}"
     {hash_method, hashed_value} = value_hash(value, value_hash_methods())
@@ -1116,7 +1061,7 @@ defmodule NebulaBootstrap do
     object = %{
       capabilitiesURI: "#{capabilities_uri()}dataobject/permanent/",
       completionStatus: "complete",
-      domainURI: "/cdmi_domains/system_domain/",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -1141,18 +1086,18 @@ defmodule NebulaBootstrap do
       valuetransferencoding: "utf-8"
     }
 
-    search_parm = get_domain_hash(object.domainURI) <> "/system_configuration/domain_maps"
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
-  defp create_env_vars({oid, key}, parentid, adminid) do
+  defp create_env_vars(oid, parentid, adminid) do
     timestamp = make_timestamp()
+    value = "{}"
+    {hash_method, hashed_value} = value_hash(value, value_hash_methods())
 
     object = %{
       capabilitiesURI: "#{capabilities_uri()}container/permanent/",
       completionStatus: "complete",
-      domainURI: "/cdmi_domains/system_domain/",
+      domainURI: "#{system_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -1163,20 +1108,21 @@ defmodule NebulaBootstrap do
         cdmi_atime: "#{timestamp}",
         cdmi_ctime: "#{timestamp}",
         cdmi_mtime: "#{timestamp}",
-        cdmi_owner: "#{adminid}"
+        cdmi_owner: "#{adminid}",
+        cdmi_hash: "#{hashed_value}",
+        cdmi_value_hash: "#{hash_method}"
       },
       objectID: "#{oid}",
-      objectName: "environment_variables/",
-      objectType: "application/cdmi-container",
+      objectName: "environment_variables",
+      objectType: "application/cdmi-object",
       parentID: "#{parentid}",
-      parentURI: "/system_configuration/"
+      parentURI: "/system_configuration/",
+      value: "#{value}",
+      valuerange: "0-1",
+      valuetransferencoding: "utf-8"
     }
 
-    search_parm =
-      get_domain_hash(object.domainURI) <> "/system_configuration/environment_variables/"
-
-    cdmi_object = %{cdmi: object, sp: "#{search_parm}"}
-    GenServer.call(Metadata, {:put, key, cdmi_object})
+    GenServer.call(Metadata, {:put, oid, object})
   end
 
   @doc """
@@ -1187,20 +1133,6 @@ defmodule NebulaBootstrap do
     :crypto.hmac(:sha, key, message)
     |> Base.encode16()
     |> String.downcase()
-  end
-
-  @doc """
-  Calculate a hash for a domain.
-  """
-  @spec get_domain_hash(String.t() | binary) :: String.t()
-  def get_domain_hash(domain) when is_binary(domain) do
-    :crypto.hmac(:sha, <<"domain">>, domain)
-    |> Base.encode16()
-    |> String.downcase()
-  end
-
-  def get_domain_hash(domain) do
-    get_domain_hash(<<domain>>)
   end
 
   @spec make_timestamp() :: String.t()
