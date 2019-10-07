@@ -8,7 +8,7 @@ defmodule NebulaBootstrap.Mixfile do
 
   def project do
     [app: :nebula_bootstrap,
-     version: "0.1.1",
+     version: "0.1.7",
      elixir: "~> 1.9",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
