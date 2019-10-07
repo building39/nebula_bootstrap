@@ -8,8 +8,8 @@ defmodule NebulaBootstrap.Mixfile do
 
   def project do
     [app: :nebula_bootstrap,
-     version: "0.1.0",
-     elixir: "~> 1.5",
+     version: "0.1.7",
+     elixir: "~> 1.9",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      escript: [main_module: NebulaBootstrap],
@@ -38,9 +38,10 @@ defmodule NebulaBootstrap.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:poison, "~> 2.0"},
-      {:cdmioid, git: "https://github.com/building39/cdmioid.git", tag: "0.1.1"},
-      {:nebula_metadata, git: "git@github.com:building39/nebula_metadata.git", tag: "v0.2.9"}
+      {:logger_file_backend, "~> 0.0.11"},
+      {:poison, "~> 4.0", override: true},
+      {:cdmioid, git: "https://github.com/building39/cdmioid.git", branch: "master"},
+      {:nebula_metadata, git: "git@github.com:building39/nebula_metadata.git", branch: "master"}
     ]
   end
 end

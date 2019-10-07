@@ -18,3 +18,5 @@ erl_crash.dump
 
 # Ignore the built escript
 /nebula_bootstrap
+
+/.elixir_ls
