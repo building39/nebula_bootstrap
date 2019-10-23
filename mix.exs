@@ -41,7 +41,7 @@ defmodule NebulaBootstrap.Mixfile do
       {:logger_file_backend, "~> 0.0.11"},
       {:poison, "~> 4.0", override: true},
       {:cdmioid, git: "https://github.com/building39/cdmioid.git", branch: "master"},
-      {:nebula_metadata, git: "git@github.com:building39/nebula_metadata.git", branch: "master"}
+      {:nebula_metadata, git: "git@github.com:building39/nebula_metadata.git", branch: "develop"}
     ]
   end
 end

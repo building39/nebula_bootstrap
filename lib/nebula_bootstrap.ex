@@ -155,7 +155,8 @@ defmodule NebulaBootstrap do
     create_system_domain(sysdomain_oid, domaincontainer_oid, adminid)
 
     defdomain_oid = Cdmioid.generate(45241)
-    create_default_domain(defdomain_oid, domaincontainer_oid, adminid)
+    # create_default_domain(defdomain_oid, domaincontainer_oid, adminid)
+    create_default_domain(defdomain_oid, defdomain_oid, adminid)
 
     members_oid = Cdmioid.generate(45241)
     create_domain_members_container(members_oid, sysdomain_oid, adminid)
@@ -725,7 +726,7 @@ defmodule NebulaBootstrap do
       ],
       childrenrange: "0-1",
       completionStatus: "complete",
-      domainURI: "#{system_domain_uri()}",
+      domainURI: "#{default_domain_uri()}",
       metadata: %{
         cdmi_acl: [
           acl_owner(),
@@ -1055,7 +1056,8 @@ defmodule NebulaBootstrap do
 
   defp create_domain_maps(oid, parentid, adminid) do
     timestamp = make_timestamp()
-    value = "{}"
+    value =
+      "{\"cdmi.localhost.net\": \"system_domain/\", \"default.localhost.net\": \"default_domain/\"}"
     {hash_method, hashed_value} = value_hash(value, value_hash_methods())
 
     object = %{
@@ -1074,7 +1076,7 @@ defmodule NebulaBootstrap do
         cdmi_mtime: "#{timestamp}",
         cdmi_owner: "#{adminid}",
         cdmi_hash: "#{hashed_value}",
-        cdmi_value_hash: "#{hash_method}"
+        cdmi_: "#{String.length(value)}"
       },
       objectID: "#{oid}",
       objectName: "domain_maps",
@@ -1082,7 +1084,6 @@ defmodule NebulaBootstrap do
       parentID: "#{parentid}",
       parentURI: "/system_configuration/",
       value: "#{value}",
-      valuerange: "0-1",
       valuetransferencoding: "utf-8"
     }
 
